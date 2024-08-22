@@ -1,0 +1,9 @@
+.button-group
+{
+    display: flex;
+}
+.parentContainer
+{
+    display: flex;
+    gap: 10px;
+}

@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Matemasie&display=swap');
+ul{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    gap:10px;
+    align-items: center;
+    font-family: "Matemasie", sans-serif;
+}
