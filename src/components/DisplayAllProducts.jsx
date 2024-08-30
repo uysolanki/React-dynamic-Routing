@@ -1,15 +1,50 @@
-import React from "react";
-import { products } from "../data/products";
+import React, { useEffect } from "react";
+//import { products } from "../data/products";
 import { Link } from "react-router-dom";
 import Navlist from "./navbar/navlist/Navlist";
 import { useState } from "react";
 import DropDownList from "../shared/DropDownList";
-
+import axios from 'axios'
 
 const DisplayAllProducts = () => {
-  const [product, setProduct] = useState(products);  //4
-  const [productBu, setProductBu] = useState(products); //20
+  const [products, setProducts] = useState([]);  //4
+  const [productBu, setProductsBu] = useState([]); //20
 
+  // async function loadData()
+  // {
+  //   fetch('https://fakestoreapi.com/products')
+  //   .then(response=>response.json())
+  //   .then(response=>{
+  //       setProducts(response)
+  //       setProductsBu(response)})
+  //   .catch((error)=>{console.log(error)})
+  // }
+
+  // async function loadData()
+  // {
+  //      const productsObjectFromAxios =await axios.get('https://fakestoreapi.com/products')
+  //      console.log(productsObjectFromAxios)
+  //      const myProducts=productsObjectFromAxios.data
+  //      console.log(myProducts)
+  //      setProducts(myProducts)
+  //      setProductsBu(myProducts)
+  // }
+
+  async function loadData()
+  {
+    const objectReceivedFromAxios= await axios.get('https://fakestoreapi.com/products')
+    console.log(objectReceivedFromAxios)
+    const myProducts=objectReceivedFromAxios.data
+    console.log(myProducts)
+    setProducts(myProducts)
+    setProductsBu(myProducts)
+  }
+
+
+
+  useEffect(()=>{
+    loadData()
+  },[])
   // const links = [
   //   { name: "men's clothing" },
   //   { name: "women's clothing" },
@@ -20,7 +55,7 @@ const DisplayAllProducts = () => {
   // ];
 
 //const categories=[...new Set(products.map((product)=>(product.category)))].map((cat)=>({name:cat}))
-  const allcategoreis=products.map((product)=>(product.category))
+  const allcategoreis=productBu.map((product)=>(product.category))
 //console.log(allcategoreis)
 
   const uniqueCategories= new Set(allcategoreis)
@@ -38,20 +73,19 @@ const DisplayAllProducts = () => {
     if(category!="All")
     {
       const filteredProducts=productBu.filter((product)=>product.category===category);
-      setProduct(filteredProducts);
+      setProducts(filteredProducts);
     }
     else{
-      setProduct(productBu);
+      setProducts(productBu);
     }
   }
 
   function filterProduct(event)
   {
-    
     const productTitle=event.target.value;
     console.log(productTitle)
-    const searchedProduct = productBu.filter((product)=>(product.title.includes(productTitle)))
-    setProduct(searchedProduct);
+    const searchedProduct = productBu?.filter((product)=>(product.title.includes(productTitle)))
+    setProducts(searchedProduct);
   }
   return (
     <>
@@ -61,7 +95,7 @@ const DisplayAllProducts = () => {
       
       <div className="container mt-5">
         <div className="row">
-          {product.map((product) => (
+          {products?.map((product) => (
             <div className="col-md-4 mb-4" key={product.id}>
               <div className="card h-100">
                 <Link to={`/singleproduct/${product.id}`}>
